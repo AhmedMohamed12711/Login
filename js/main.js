@@ -17,7 +17,17 @@ if (document.getElementById('userName')) {
     }
 }
 
+
 var signUpArray = JSON.parse(localStorage.getItem('users') || '[]');
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function isValidPassword(password) {
+    return password.length >= 6 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password);
+}
 // !signup
 function isSignUpEmpty() {
     return supName.value && supEmail.value && supPassword.value;
@@ -32,6 +42,16 @@ function isEmailExist() {
 function signUp() {
     if (!isSignUpEmpty()) {
         correct_register.innerHTML = '<span class="text-danger m-3">All inputs are required</span>';
+        return;
+    }
+
+    if (!isValidEmail(supEmail.value.trim())) {
+        correct_register.innerHTML = '<span class="text-danger m-3">Invalid email format</span>';
+        return;
+    }
+
+    if (!isValidPassword(supPassword.value.trim())) {
+        correct_register.innerHTML = '<span class="text-danger m-3">Password must be at least 6 characters long and contain uppercase, lowercase, and a number</span>';
         return;
     }
 
@@ -57,6 +77,11 @@ function isLoginEmpty() {
 function Login() {
     if (!isLoginEmpty()) {
         errorLogin.innerHTML = '<span class="text-danger m-3">All inputs are required</span>';
+        return;
+    }
+
+    if (!isValidEmail(sinEmail.value.trim())) {
+        errorLogin.innerHTML = '<span class="text-danger m-3">Invalid email format</span>';
         return;
     }
 
